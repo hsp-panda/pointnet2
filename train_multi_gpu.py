@@ -43,6 +43,7 @@ EPOCH_CNT = 0
 
 NUM_GPUS = FLAGS.num_gpus
 BATCH_SIZE = FLAGS.batch_size
+print('Batch', BATCH_SIZE, 'GPU', NUM_GPUS)
 assert(BATCH_SIZE % NUM_GPUS == 0)
 DEVICE_BATCH_SIZE = BATCH_SIZE / NUM_GPUS
 
@@ -178,14 +179,15 @@ def train():
             tower_grads = []
             pred_gpu = []
             total_loss_gpu = []
-            for i in range(NUM_GPUS):
+            for i in list(range(NUM_GPUS)):
                 with tf.variable_scope(tf.get_variable_scope(), reuse=True):
+                #with tf.compat.v1.get_variable_scope(tf.get_variable_scope(), reuse=True):
+                    
                     with tf.device('/gpu:%d'%(i)), tf.name_scope('gpu_%d'%(i)) as scope:
                         # Evenly split input data to each GPU
-                        pc_batch = tf.slice(pointclouds_pl,
-                            [i*DEVICE_BATCH_SIZE,0,0], [DEVICE_BATCH_SIZE,-1,-1])
-                        label_batch = tf.slice(labels_pl,
-                            [i*DEVICE_BATCH_SIZE], [DEVICE_BATCH_SIZE])
+                        pc_batch = tf.slice( pointclouds_pl, [int(i*DEVICE_BATCH_SIZE),0,0], [int(DEVICE_BATCH_SIZE),-1,-1] )
+                        label_batch = tf.slice( labels_pl, [int(i*DEVICE_BATCH_SIZE)], [int(DEVICE_BATCH_SIZE)] )
+                        
 
                         pred, end_points = MODEL.get_model(pc_batch,
                             is_training=is_training_pl, bn_decay=bn_decay)
