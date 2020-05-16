@@ -31,3 +31,6 @@ venv.bak/
 
 # Downloaded model files
 data/
+
+# Log files
+log/
