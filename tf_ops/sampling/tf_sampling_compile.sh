@@ -3,8 +3,8 @@
 
 /usr/local/cuda/bin/nvcc tf_sampling_g.cu -o tf_sampling_g.cu.o -c -O2 -DGOOGLE_CUDA=0 -x cu -Xcompiler -fPIC
 
-TF_INC=$(python -c 'import tensorflow as tf; print(tf.sysconfig.get_include())')
-TF_LIB=$(python -c 'import tensorflow as tf; print(tf.sysconfig.get_lib())')
+TF_INC=$(python3 -c 'import tensorflow as tf; print(tf.sysconfig.get_include())')
+TF_LIB=$(python3 -c 'import tensorflow as tf; print(tf.sysconfig.get_lib())')
 
 #TF_INC=/home/vcortex/anaconda3/envs/tensorflow/lib/python3.7/site-packages/tensorflow_core/include
 #TF_LIB=/home/vcortex/anaconda3/envs/tensorflow/lib/python3.7/site-packages/tensorflow_core
